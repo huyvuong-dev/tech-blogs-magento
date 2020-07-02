@@ -43,7 +43,7 @@ class Comment
     public function addCommentToOrder($orderId, $comment, $status=null)
     {
         $order = null;
-        $orderId = 5; // Update order with the id = 5
+        $orderId = 6; // Update order with the id = 6
         $comment = 'Delivery on way'; // Your content
         $status = Order::STATE_PROCESSING; // Change order status
         try {
@@ -51,12 +51,14 @@ class Comment
             if ($order->canComment()) {
                 $history = $this->orderHistoryFactory->create()
                     ->setStatus(!empty($status) ? $status : $order->getStatus()) // Update status when passing $comment parameter
-                    ->setEntityName(\Magento\Sales\Model\Order::ENTITY)
-                    ->setIsCustomerNotified(true) // Enable Notify Customer by Email
-                    ->setIsVisibleOnFront(true) // Enable visible on Storefront
+                    ->setEntityName(\Magento\Sales\Model\Order::ENTITY) // Set the entity name for order
                     ->setComment(
                         __('Comment: %1.', $comment)
                     ); // Set your comment
+
+                $history->setIsCustomerNotified(true)// Enable Notify your customers
+                        ->setIsVisibleOnFront(true);// Enable order status visible on frontend
+
                 $order->addStatusHistory($history); // Add your comment to order
             }
             $this->orderRepository->save($order);

@@ -22,6 +22,6 @@ class Index extends Action
 
     public function execute()
     {
-        $this->comment->addCommentToOrder(3, 'change order comment');
+        $this->comment->addCommentToOrder(6,'Delivery on way');
     }
 }
